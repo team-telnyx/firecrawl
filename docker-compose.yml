@@ -1,3 +1,4 @@
+version: "3.8"
 x-common-service: &common-service
   # NOTE: If you want to build the service locally,
   # uncomment the build: statement and comment out the image: statement
