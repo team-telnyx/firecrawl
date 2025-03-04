@@ -16,11 +16,11 @@ docker_build_args = \
 
 .PHONY: build
 build:
-	docker-compose build --build-arg $(docker_build_args)
+	docker compose build --build-arg $(docker_build_args)
 
 .PHONY: start
 start:
-	docker-compose up
+	docker compose up
 
 .PHONY: test
 test:
