@@ -1,0 +1,63 @@
+names:
+  service: firecrawl
+  github: firecrawl
+
+build:
+  allow_vulnerable_image: true
+  use_vault_ha: true
+
+project:
+  squad: ai.integrations.squad
+  primary_maintainer: rudra
+  secondary_maintainer: ciaranp
+  public_api: false
+  private_api: true
+
+autoscaling:
+  minInstances: 3
+  maxInstances: 6
+  averageMemory: 200
+  averageCpu: 50
+
+deploy:
+  cpu: 150
+  cpu_limit: 1000
+  memory: 300
+  memory_limit: 1000
+  k8s_clusters:
+    ["backend-ch1-prod", "backend-dc2-prod", "tlnx-backend-de1-prod"]
+  node_profile: generic-preemptible
+  certificate: "*.query.prod.telnyx.io"
+  secrets_from: file
+  instances: 3
+  k8s_request_api_access_namespace: true
+  grace_period: 60
+  service:
+    - name: firecrawl
+      port: 3000
+
+alerts:
+  HostInstanceDown:
+    description: "The number of available instances is less than the expected amount."
+    destination: "opsgenie"
+    prometheus_expression: 'sum(kube_deployment_status_replicas_unavailable{job="kube-state-metrics",deployment="firecrawl"}) > 0'
+    prometheus_for: "5m"
+    resolution_document: "https://app.getguru.com/card/cp45qLbi/NOC-Service-Alerts"
+  HostMemoryHalf:
+    description: "Host has reached 60% memory capacity."
+    destination: "opsgenie"
+    prometheus_expression: max(container_memory_usage_bytes{pod=~"firecrawl(-.{1,10}-.{1,10})$",container!="",container!="POD",container=~".*firecrawl.*"}) / max(kube_pod_container_resource_limits{resource="memory",unit="byte",job="kube-state-metrics",container=~"firecrawl",pod=~"firecrawl-.*"}) > 0.60
+    prometheus_for: "5m"
+    resolution_document: "https://app.getguru.com/card/cp45qLbi/NOC-Service-Alerts"
+  HostOutOfMemory:
+    description: "Host has reached 80% memory capacity. Less than 20% available."
+    destination: "opsgenie"
+    prometheus_expression: max(container_memory_usage_bytes{pod=~"firecrawl(-.{1,10}-.{1,10})$",container!="",container!="POD",container=~".*firecrawl.*"}) / max(kube_pod_container_resource_limits{resource="memory",unit="byte",job="kube-state-metrics",container=~"firecrawl",pod=~"firecrawl-.*"}) > 0.80
+    prometheus_for: "5m"
+    resolution_document: "https://app.getguru.com/card/cp45qLbi/NOC-Service-Alerts"
+  HostOutOfCPU:
+    description: "Host has reached 80% CPU usage. Less than 20% available."
+    destination: "opsgenie"
+    prometheus_expression: (sum(kube_metrics_server_pods_cpu{pod_name=~"firecrawl(-.{1,10}-.{1,10})$",pod_container_name=~"firecrawl"}) by (pod_name,pod_container_name) / 1000000) > 480
+    prometheus_for: "5m"
+    resolution_document: "https://app.getguru.com/card/cp45qLbi/NOC-Service-Alerts"

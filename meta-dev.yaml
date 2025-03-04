@@ -1,0 +1,51 @@
+names:
+  service: firecrawl
+  github: firecrawl
+
+build:
+  allow_vulnerable_code: true
+  allow_vulnerable_image: true
+  use_vault_ha: true
+  promote_to_dev:
+    branch_pattern: "main|dev"
+
+project:
+  squad: ai.integrations.squad
+  primary_maintainer: rudra
+  secondary_maintainer: ciaranp
+  public_api: false
+  private_api: true
+
+autoscaling:
+  minInstances: 1
+  maxInstances: 3
+  averageMemory: 200
+  averageCpu: 50
+
+deploy:
+  cpu: 100
+  cpu_limit: 400
+  memory: 300
+  memory_limit: 800
+  k8s_clusters: ["backend-ch1-dev", "aws-backend-dc2-dev"]
+  node_profile: generic-preemptible
+  certificate: "*.query.dev.telnyx.io"
+  secrets_from: file
+  instances: 1
+  k8s_request_api_access_namespace: true
+  grace_period: 60
+  service:
+    - name: firecrawl
+      port: 3000
+
+  env:
+    static:
+      PORT: 3000
+      INTERNAL_PORT: 3000
+      PLAYWRIGHT_MICROSERVICE_PORT: 3002
+      USE_DB_AUTHENTICATION: false
+
+    secret:
+      # - OPENAI_API_KEY
+      # - OPENAI_BASE_URL
+      # - MODEL_NAME
