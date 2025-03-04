@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.8"
 
 x-common-service: &common-service
   # NOTE: If you want to build the service locally,
@@ -18,7 +18,7 @@ x-common-service: &common-service
 x-common-env: &common-env
   REDIS_URL: ${REDIS_URL:-redis://redis:6379}
   REDIS_RATE_LIMIT_URL: ${REDIS_URL:-redis://redis:6379}
-  PLAYWRIGHT_MICROSERVICE_URL: ${PLAYWRIGHT_MICROSERVICE_URL:-http://playwright-service:${PLAYWRIGHT_MICROSERVICE_PORT:-3002}/scrape}
+  PLAYWRIGHT_MICROSERVICE_URL: ${PLAYWRIGHT_MICROSERVICE_URL:-http://playwright-service:3002/scrape}
   USE_DB_AUTHENTICATION: ${USE_DB_AUTHENTICATION:-false}
   OPENAI_API_KEY: ${OPENAI_API_KEY}
   OPENAI_BASE_URL: ${OPENAI_BASE_URL}
