@@ -44,8 +44,3 @@ deploy:
       INTERNAL_PORT: 3000
       PLAYWRIGHT_MICROSERVICE_PORT: 3002
       USE_DB_AUTHENTICATION: false
-
-    secret:
-      # - OPENAI_API_KEY
-      # - OPENAI_BASE_URL
-      # - MODEL_NAME
