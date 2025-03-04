@@ -4,7 +4,7 @@ service := firecrawl
 port := 3000
 
 main_image := registry.internal.telnyx.com/jenkins/$(service):$(tag)
-node_version := 22.0.0
+node_version := 22.14.0
 
 docker_build_args = \
 	--build-arg GIT_COMMIT=$(shell git show -s --format=%H) \
