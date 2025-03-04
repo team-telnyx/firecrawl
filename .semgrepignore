@@ -1,0 +1,5 @@
+# Exclude potential SQL injection rule
+apps/api/src/services/idempotency/create.ts
+
+# Exclude insecure WebSocket usage rule
+apps/js-sdk/firecrawl/src/index.ts
