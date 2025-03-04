@@ -64,6 +64,15 @@ services:
       HOST: "0.0.0.0"
       PORT: ${INTERNAL_PORT:-3000}
       FLY_PROCESS_GROUP: app
+    image: ${MAIN_IMAGE}
+    build:
+      context: apps/api
+      args:
+        GIT_COMMIT: ${GIT_COMMIT}
+        GIT_COMMIT_DATE: ${GIT_COMMIT_DATE}
+        BUILD_DATE: ${BUILD_DATE}
+        BUILD_URL: ${BUILD_URL}
+        VER_NODE: ${VER_NODE}
     depends_on:
       - redis
       - playwright-service
