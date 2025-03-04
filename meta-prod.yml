@@ -4,7 +4,7 @@ names:
 
 build:
   allow_vulnerable_image: true
-  use_vault_ha: false
+  use_vault_ha: true
 
 project:
   squad: ai.integrations.squad

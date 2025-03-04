@@ -5,7 +5,7 @@ names:
 build:
   allow_vulnerable_code: true
   allow_vulnerable_image: true
-  use_vault_ha: false
+  use_vault_ha: true
   promote_to_dev:
     branch_pattern: "main|dev"
 
